@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#435333">
+  <title>فحص موقع الصدقة الجارية - فايزة محمد</title>
+  <style>
+    :root{color-scheme:light;--olive:#435333;--bg:#f3ebdd;--copper:#b87945}
+    *{box-sizing:border-box}
+    body{margin:0;padding:20px;background:var(--bg);color:#29291f;font-family:Arial,sans-serif;line-height:1.7}
+    main{max-width:720px;margin:24px auto;background:#fffdf8;border:1px solid #ded5c5;border-radius:18px;padding:22px;box-shadow:0 8px 28px #0000000b}
+    h1{margin-top:0;color:var(--olive);font-size:24px}
+    p{margin:8px 0}
+    label{display:block;font-weight:bold;margin:14px 0 5px}
+    input,textarea{width:100%;padding:12px;border:1px solid #cfc7b8;border-radius:9px;font:inherit;background:white}
+    textarea{min-height:100px;resize:vertical}
+    button{border:0;border-radius:9px;background:var(--olive);color:white;padding:12px 18px;font:inherit;font-weight:bold;cursor:pointer;margin:10px 5px 5px 0}
+    button.secondary{background:#756c5c}
+    button:disabled{opacity:.55;cursor:wait}
+    pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f4f1e9;border:1px solid #e1dacd;border-radius:10px;padding:13px;min-height:90px;direction:ltr;text-align:left;font:13px/1.6 monospace}
+    .warning{border-right:4px solid var(--copper);padding:8px 12px;background:#fbf4eb;border-radius:6px}
+    .status{font-weight:bold;color:var(--olive)}
+    iframe.transport-frame{display:none;width:0;height:0;border:0}
+  </style>
+</head>
+<body>
+<main>
+  <h1>صفحة تشخيص سجل الدعاء</h1>
+  <p>هذه الصفحة تختبر قراءة الأدعية فقط عبر POST داخل iframe مخفي، ثم تستقبل النتيجة عبر postMessage. لا يتم إرسال أي دعاء أو إضافة صفوف جديدة.</p>
+  <p class="warning">هذا الاختبار مخصص للقراءة فقط. يستخدم POST لأن مسار الإرسال عبر POST ثبت نجاحه سابقًا، بينما كان مسار القراءة عبر GET يتعطل. لن يغيّر أي بيانات في الجدول.</p>
+
+  <div>
+    <button id="read-btn" class="secondary" type="button">اختبار تحميل الأدعية عبر POST</button>
+    <button id="stats-read-btn" type="button">اختبار قراءة إحصائيات الزيارات (لا يضيف زيارة)</button>
+    <button id="stats-track-btn" type="button">تسجيل زيارة تجريبية واحدة</button>
+  </div>
+
+  <h3>معلومات الجهاز والاتصال</h3>
+  <pre id="device-info">جارٍ جمع المعلومات...</pre>
+  <h3>الأدعية المسترجعة من الورقة1</h3>
+  <div id="duas-list" style="display:grid;gap:10px;margin:12px 0"></div>
+  <h3>إجمالي الزيارات المسجل</h3>
+  <p id="stats-count" class="status">لم يتم اختبار الإحصائيات بعد.</p>
+  <h3>نتيجة آخر اختبار</h3>
+  <p id="status" class="status" aria-live="polite">لم يبدأ الاختبار بعد.</p>
+  <pre id="output">ستظهر تفاصيل الاختبار هنا.</pre>
+  <iframe class="transport-frame" id="transport-frame" name="duaTransportFrame" title="اتصال خلفي"></iframe>
+</main>
+<script>
+(() => {
+  "use strict";
+  const API = "PASTE_WEB_APP_URL_HERE";
+  const API_READY = /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(API);
+  const frame = document.getElementById("transport-frame");
+  const status = document.getElementById("status");
+  const output = document.getElementById("output");
+  const duasList = document.getElementById("duas-list");
+  const readBtn = document.getElementById("read-btn");
+  const statsReadBtn = document.getElementById("stats-read-btn");
+  const statsTrackBtn = document.getElementById("stats-track-btn");
+  const statsCount = document.getElementById("stats-count");
+    let pending = null;
+
+  document.getElementById("device-info").textContent = [
+    "User-Agent: " + navigator.userAgent,
+    "Online: " + navigator.onLine,
+    "Language: " + navigator.language,
+    "Platform: " + (navigator.platform || "غير متاح"),
+    "Page URL: " + location.href,
+    "Time: " + new Date().toISOString()
+  ].join("\n");
+
+  function makeToken() {
+    return "diag_" + Date.now() + "_" + Math.random().toString(36).slice(2, 12);
+  }
+
+  function setBusy(busy) {
+    readBtn.disabled = busy;
+    statsReadBtn.disabled = busy;
+    statsTrackBtn.disabled = busy;
+  }
+
+  function receiveMessage(event) {
+    if (!pending) return;
+    const data = event.data;
+    const expectedChannel = (pending.kind === "STATS_READ" || pending.kind === "STATS_TRACK") ? "visitor-stats" : "dua-wall-diagnostic";
+    if (!data || data.channel !== expectedChannel || data.token !== pending.token) return;
+    const current = pending;
+    pending = null;
+    clearTimeout(current.timer);
+    setBusy(false);
+
+    const payload = data.payload;
+    const elapsed = Date.now() - current.started;
+    if (current.kind === "STATS_READ" || current.kind === "STATS_TRACK") {
+      if (payload && payload.success && Number.isFinite(Number(payload.count))) {
+        statsCount.textContent = "إجمالي الزيارات: " + Number(payload.count).toLocaleString("ar");
+      } else {
+        statsCount.textContent = "تعذرت العملية: " + ((payload && payload.message) || "رد غير مكتمل");
+      }
+    }
+
+    if (current.kind === "READ") {
+      const duas = payload && Array.isArray(payload.duas) ? payload.duas : [];
+      duasList.replaceChildren();
+      if (!duas.length) {
+        const empty = document.createElement("p");
+        empty.textContent = payload && payload.success
+          ? "نجح الاتصال، لكن لا توجد أدعية منشورة في الورقة1."
+          : "لم تصل قائمة أدعية قابلة للعرض.";
+        duasList.appendChild(empty);
+      } else {
+        duas.forEach((item, index) => {
+          const card = document.createElement("article");
+          card.style.cssText = "padding:12px;border:1px solid #ded5c5;border-radius:10px;background:#fff";
+          const text = document.createElement("p");
+          text.style.margin = "0 0 6px";
+          text.textContent = (index + 1) + ". " + (item.dua || item.text || "");
+          const meta = document.createElement("small");
+          meta.style.color = "#756c5c";
+          meta.textContent = [item.name || "زائر", item.date || ""].filter(Boolean).join(" — ");
+          card.append(text, meta);
+          duasList.appendChild(card);
+        });
+      }
+    }
+    status.textContent = payload && payload.success
+      ? "نجاح: استلمنا ردًا من Google Apps Script."
+      : "وصل رد من Google، لكنه يشير إلى فشل العملية.";
+
+    output.textContent = [
+      "TEST: " + current.kind,
+      "METHOD: " + current.method,
+      "ELAPSED: " + elapsed + " ms",
+      "RESPONSE ORIGIN: " + event.origin,
+      "ONLINE: " + navigator.onLine,
+      "REQUEST URL: " + current.requestUrl,
+      "RESPONSE:",
+      JSON.stringify(payload, null, 2)
+    ].join("\n");
+  }
+
+  window.addEventListener("message", receiveMessage);
+
+  function begin(kind, method, requestUrl) {
+    if (pending) return null;
+    const token = makeToken();
+    const started = Date.now();
+    const item = {kind, method, token, started, requestUrl, timer:null};
+    item.timer = setTimeout(() => {
+      if (pending !== item) return;
+      pending = null;
+      setBusy(false);
+      status.textContent = "انتهت مهلة انتظار رد Google بعد 25 ثانية.";
+      output.textContent += "\n\nTIMEOUT: لم تصل رسالة postMessage من إطار Google." +
+        "\nMETHOD: " + method +
+        "\nREQUEST URL: " + requestUrl +
+        "\nتنبيه: في اختبار الإرسال، افحص Google Sheets قبل إعادة المحاولة؛ فقد يكون الصف قد أُضيف.";
+    }, 25000);
+    pending = item;
+    setBusy(true);
+    status.textContent = "جارٍ تنفيذ الاختبار...";
+    output.textContent = [
+      "TEST: " + kind,
+      "METHOD: " + method,
+      "REQUEST URL: " + requestUrl,
+      "جارٍ انتظار رسالة من Google Apps Script..."
+    ].join("\n");
+    return token;
+  }
+
+  function ensureApi() {
+    if (API_READY) return true;
+    status.textContent = "لم يتم ربط Apps Script بعد.";
+    output.textContent = "افتح ملف Code.gs في المستودع، والصقه داخل Apps Script المرتبط بجدول فايزة، ثم انشره كتطبيق ويب وضع رابط /exec في script.js وdiagnostics.html.";
+    return false;
+  }
+
+  function runRead() {
+    if (!ensureApi()) return;
+    const token = makeToken();
+    const requestUrl = API + " [POST form -> hidden iframe; mode=frameRead]";
+    const activeToken = begin("READ", "POST form داخل iframe مخفي", requestUrl);
+    if (!activeToken) return;
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = API;
+    form.target = frame.name;
+    form.acceptCharset = "UTF-8";
+    form.style.display = "none";
+
+    const fields = {mode:"frameRead", action:"read", token:activeToken};
+    Object.entries(fields).forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(() => form.remove(), 1000);
+  }
+
+
+
+  function runStatsRead() {
+    if (!ensureApi()) return;
+    const requestUrl = API + " [POST form -> hidden iframe; mode=frameStats, action=read]";
+    const activeToken = begin("STATS_READ", "POST form داخل iframe مخفي", requestUrl);
+    if (!activeToken) return;
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = API;
+    form.target = frame.name;
+    form.acceptCharset = "UTF-8";
+    form.style.display = "none";
+
+    const fields = {mode:"frameStats", action:"read", token:activeToken};
+    Object.entries(fields).forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(() => form.remove(), 1000);
+  }
+
+  function runStatsTrack() {
+    if (!ensureApi()) return;
+    const requestUrl = API + " [POST form -> hidden iframe; mode=frameStats, action=track]";
+    const activeToken = begin("STATS_TRACK", "POST form داخل iframe مخفي", requestUrl);
+    if (!activeToken) return;
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = API;
+    form.target = frame.name;
+    form.acceptCharset = "UTF-8";
+    form.style.display = "none";
+
+    const fields = {mode:"frameStats", action:"track", token:activeToken};
+    Object.entries(fields).forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+    setTimeout(() => form.remove(), 1000);
+  }
+
+  readBtn.addEventListener("click", runRead);
+  statsReadBtn.addEventListener("click", runStatsRead);
+  statsTrackBtn.addEventListener("click", runStatsTrack);
+})();
+</script>
+</body>
+</html>
