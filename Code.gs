@@ -102,7 +102,7 @@ function saveDua(duaText, name) {
   try {
     const sheet = getDuaSheet_();
     const nextNumber = Math.max(1, sheet.getLastRow());
-    sheet.appendRow([nextNumber, dua, author, new Date(), "قيد المراجعة"]);
+    sheet.appendRow([nextNumber, dua, author, new Date(), "منشور"]);
     return { success: true, message: "تم استلام الدعاء للمراجعة." };
   } finally {
     lock.releaseLock();
