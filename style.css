@@ -1,0 +1,176 @@
+:root{
+  --olive:#596b43;--olive-dark:#435333;--olive-deep:#303d27;
+  --beige:#f3ebdd;--beige-light:#faf6ee;--copper:#b87945;
+  --ink:#293222;--muted:#747260;--line:#dfd3c0;
+  --shadow:0 16px 42px rgba(48,61,39,.09);--radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{margin:0;background:var(--beige);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.9}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #b8794580;outline-offset:3px}
+.hero{position:relative;isolation:isolate;overflow:hidden;padding:54px 20px 58px;text-align:center;color:#fff;background:radial-gradient(circle at 85% 10%,#819064 0,transparent 32%),linear-gradient(145deg,var(--olive-deep),var(--olive))}
+.hero:before,.hero:after{content:"";position:absolute;z-index:-1;border:1px solid #ffffff18;border-radius:50%;width:300px;height:300px}
+.hero:before{top:-190px;right:-90px}.hero:after{bottom:-230px;left:-100px;width:390px;height:390px}
+.inner{max-width:850px;margin:auto}
+.bism{color:#e6c49e;font-size:14px;letter-spacing:1px}
+.emblem{display:grid;place-items:center;width:68px;height:68px;margin:17px auto 12px;border:1px solid #d5a77788;border-radius:50%;color:#e1b98f;background:#ffffff0c;font-size:31px}
+h1{margin:8px 0;font-size:clamp(28px,6vw,46px);line-height:1.45}
+.subtitle{max-width:590px;margin:10px auto 0;color:#f0eadf}
+.name-card{display:flex;align-items:center;gap:20px;max-width:540px;margin:28px auto 0;padding:18px 22px;border:1px solid #d5a77766;border-radius:20px;background:#ffffff0d;backdrop-filter:blur(8px);text-align:right}
+.deceased-img{width:112px;height:112px;flex:0 0 112px;object-fit:cover;border:3px solid #d5a777;border-radius:50%;box-shadow:0 8px 24px #0003}
+.name-card strong{display:block;color:#f1cfaa;font-size:21px;line-height:1.6}
+.name-card p{margin:5px 0 0;color:#f5efe5;font-size:14px}
+nav{position:sticky;top:0;z-index:20;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#faf6eef2;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+nav a{padding:7px 13px;border-radius:99px;background:#eee5d5;color:var(--olive-dark);font-size:13px;font-weight:700;transition:background .2s,color .2s,transform .2s}
+nav a:hover{background:var(--olive);color:white;transform:translateY(-2px)}
+main{max-width:850px;margin:30px auto;padding:0 16px}
+.section{margin:17px 0;padding:clamp(20px,4vw,30px);border:1px solid var(--line);border-radius:var(--radius);background:var(--beige-light);box-shadow:var(--shadow)}
+.section h2{display:flex;align-items:center;gap:10px;margin:0 0 5px;color:var(--olive-dark);font-size:22px}
+.intro{margin:0 0 18px;color:var(--muted);font-size:14px}
+.actions,.story-actions,.store-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:10px 17px;border:1px solid transparent;border-radius:12px;background:var(--olive);color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:transform .2s,background .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);background:var(--olive-dark);box-shadow:0 7px 18px #43533320}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.outline{border-color:var(--line);background:transparent;color:var(--olive-dark)}
+.btn.outline:hover{background:#eee5d5;box-shadow:none}
+.tilegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tile{padding:15px;border:1px solid var(--line);border-radius:15px;background:var(--beige)}
+.tile summary{cursor:pointer;list-style:none}.tile summary::-webkit-details-marker{display:none}
+.tile summary strong{display:block;color:var(--olive-dark)}.tile summary span{font-size:12px;color:var(--muted)}
+.tile .ico{font-size:24px}.tile p{font-size:14px}
+.dua{margin:12px 0;padding:15px 17px;border-right:4px solid var(--copper);border-radius:12px;background:#eee5d5}
+.dua p{margin:0;font-size:16px}
+.search-box{display:flex;gap:9px;flex-wrap:wrap}
+.search-input,.source-select,.wall-input{min-height:46px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink)}
+.search-input{flex:1;min-width:190px}.source-select{max-width:100%}
+.story-container{display:flex;min-height:235px;flex-direction:column;align-items:center;justify-content:center;padding:24px;border:1px solid #b8794577;border-radius:18px;background:linear-gradient(145deg,var(--olive-deep),var(--olive));text-align:center;color:#fff}
+.story-badge{margin-bottom:12px;padding:4px 12px;border-radius:30px;background:#d7aa7b;color:#303d27;font-size:12px;font-weight:700}
+.story-text{max-width:600px;margin:0 0 18px;color:#fff;font-size:clamp(17px,3vw,21px);font-weight:700;line-height:1.8}
+.story-actions{justify-content:center}
+.story-actions .btn{border-color:#d7aa7b;background:#d7aa7b;color:var(--olive-deep)}
+.story-actions .btn.outline{background:transparent;color:#fff;border-color:#ffffff77}
+.small{color:var(--muted);font-size:12px}
+.apps-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.app-card{padding:17px;border:1px solid var(--line);border-radius:16px;background:var(--beige);transition:transform .25s,border-color .25s}
+.app-card:hover{transform:translateY(-3px);border-color:#c69b70}
+.app-header{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.app-header strong{color:var(--olive-dark)}
+.app-badge{padding:3px 8px;border-radius:7px;background:#eee5d5;color:var(--olive-dark);font-size:11px}
+.app-desc{min-height:50px;margin:8px 0 12px;color:var(--muted);font-size:13px}
+.store-btn{min-height:36px;padding:7px 10px;font-size:12px}
+.interactive-box{margin:12px 0;padding:18px;border:1px solid var(--line);border-radius:16px;background:#eee5d5;text-align:center}
+.interactive-box strong{display:block;color:var(--olive-dark)}
+.counter-number{display:block;margin:5px 0;color:var(--olive);font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}
+.profile{display:flex;align-items:center;gap:17px}
+.avatar{width:76px;height:76px;flex:0 0 76px;object-fit:cover;border:2px solid var(--copper);border-radius:50%}
+footer{padding:30px 16px 42px;color:var(--muted);font-size:12px;text-align:center}
+footer p{margin:4px}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1)}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+@media(max-width:600px){.hero{padding:38px 16px 42px}.name-card{gap:13px;padding:15px}.deceased-img{width:86px;height:86px;flex-basis:86px}.name-card strong{font-size:17px}nav{gap:6px}nav a{padding:6px 10px;font-size:12px}.tilegrid,.apps-grid{grid-template-columns:1fr}.app-desc{min-height:0}.profile{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+
+/* صورة كاملة بلا قصّ: نعرض كامل أبعاد الصورة الأصلية */
+.deceased-img{width:132px;height:158px;flex:0 0 132px;object-fit:contain;object-position:center;background:#eee5d5;border-radius:16px;padding:3px}
+.avatar{object-fit:contain;object-position:center;background:#eee5d5;border-radius:12px;padding:2px}
+.wall-form{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.wall-input{width:100%;resize:vertical}
+.wall-messages{display:grid;gap:10px;margin:14px 0}
+.wall-msg-card{padding:13px 15px;border:1px solid var(--line);border-right:4px solid var(--copper);border-radius:12px;background:#fff}
+.wall-msg-card strong{color:var(--olive-dark)}
+.wall-msg-card p{margin:5px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.install-btn{margin-top:14px}
+@media(max-width:600px){.name-card{align-items:center}.deceased-img{width:112px;height:142px;flex-basis:112px}}
+
+/* تذييل الموقع */
+.footer-credit{display:flex;align-items:center;justify-content:center;gap:13px;margin:20px auto 12px;color:var(--olive-dark)}
+.footer-credit img{width:58px;height:58px;object-fit:contain;object-position:center;background:#eee5d5;border:2px solid var(--copper);border-radius:12px;padding:2px}
+.footer-credit p{margin:0;line-height:1.6}.footer-credit strong{font-size:16px}
+.footer-social{display:flex;justify-content:center;gap:10px;margin:12px auto}
+.social-link{display:inline-flex;align-items:center;justify-content:center;min-width:104px;padding:8px 15px;border:1px solid var(--line);border-radius:12px;font-size:13px;font-weight:700;transition:transform .2s,background .2s}
+.social-link:hover{transform:translateY(-2px)}.social-link.whatsapp{color:#167b48;background:#e5f4eb;border-color:#b8dfc8}.social-link.instagram{color:#a13d70;background:#f8eaf1;border-color:#e9c4d5}
+
+.final-section{text-align:center}.final-section h2{justify-content:center}.final-section .intro{margin:8px auto 14px}.final-section .install-btn{margin:8px auto 4px}.final-section #install-help{max-width:520px;margin:6px auto 0;line-height:1.8}
+.footer-credit{margin:10px auto 6px}.footer-social{gap:14px;margin:8px auto 0}.social-link{width:48px;height:48px;min-width:48px;padding:11px;border-radius:50%}.social-link svg{display:block;width:23px;height:23px}
+
+
+/* بطاقة الذكر والدعاء وزر تثبيت التطبيق أسفلها */
+.final-section{text-align:right}
+.final-section .profile{align-items:center;gap:17px}
+.final-section .profile h2{justify-content:flex-start;margin:0 0 5px}
+.final-section .profile p{margin:4px 0}
+.install-area{display:flex;flex-direction:column;align-items:center;gap:3px;margin:12px auto 24px;text-align:center}
+.install-area .install-btn{margin:0;gap:8px}
+.install-area .install-btn svg{width:18px;height:18px;display:block}
+.install-area #install-help{margin:3px 0 0}
+@media(max-width:600px){.final-section .profile{align-items:flex-start}.final-section .avatar{width:76px;height:76px;flex-basis:76px}}
+
+
+/* زخارف هندسية جديدة في مقدمة الموقع */
+.hero:before,.hero:after{
+  border-radius:0;
+  transform:rotate(45deg);
+  background:linear-gradient(135deg,#ffffff0a,#ffffff00);
+}
+.hero:before{
+  width:230px;height:230px;top:-150px;right:-80px;
+  border:2px solid #d5a77755;
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+}
+.hero:after{
+  width:285px;height:285px;bottom:-205px;left:-105px;
+  border:2px solid #ffffff24;
+  border-radius:28px;
+}
+.emblem{
+  border-radius:18px;
+  outline:1px solid #d5a77755;
+  outline-offset:6px;
+}
+
+
+/* عداد إجمالي الزيارات أسفل بطاقة الفقيد */
+.visitor-counter{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  min-height:38px;margin:15px auto 0;
+}
+.visitor-eye{
+  display:grid;place-items:center;width:34px;height:34px;padding:6px;
+  border:1px solid #ffffff22;border-radius:50%;
+  background:#ffffff08;color:#ffffff70;cursor:pointer;
+  transition:color .2s,background .2s,border-color .2s,transform .2s;
+}
+.visitor-eye:hover:not(:disabled){
+  color:#ffffffc9;background:#ffffff16;border-color:#ffffff55;
+  transform:translateY(-1px);
+}
+.visitor-eye:disabled{opacity:.65;cursor:default}
+.visitor-eye svg{
+  width:19px;height:19px;fill:none;stroke:currentColor;
+  stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round;
+}
+.visitor-eye .eye-open{display:none}
+.visitor-eye .eye-closed{display:block}
+.visitor-eye[aria-expanded="true"] .eye-open{display:block}
+.visitor-eye[aria-expanded="true"] .eye-closed{display:none}
+.visitor-total{
+  color:#ffffffdf;font-size:13px;font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.visitor-sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+
+
+/* احترام خاصية hidden حتى مع عناصر لها display مخصص */
+[hidden]{display:none!important}
+
+/* أيقونة المرأة المحجبة بدل الصورة الشخصية */
+.deceased-icon,.avatar-icon{display:block;object-fit:contain;background:var(--beige-light);border:2px solid var(--copper);border-radius:50%;box-shadow:0 8px 24px rgba(0,0,0,.10)}
+.deceased-icon{width:112px;height:112px;flex:0 0 112px;padding:5px}
+.avatar-icon{width:76px;height:76px;flex:0 0 76px;padding:3px}
+@media(max-width:600px){.deceased-icon{width:86px;height:86px;flex-basis:86px}}
