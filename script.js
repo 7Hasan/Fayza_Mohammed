@@ -69,7 +69,7 @@
   };
 
   // سجل الدعاء مركزي: القراءة من Google Sheets والإرسال للمراجعة.
-  const DUA_API_URL = "PASTE_WEB_APP_URL_HERE";
+  const DUA_API_URL = "https://script.google.com/macros/s/AKfycbwfxieadnusHm4nB6EazKVibwlecSo7WkxJrAQAQLCuXc6NR2fWKiJw5y-72-8CwhRzdA/exec";
   const API_READY = /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(DUA_API_URL);
   const wallForm = $("#dua-form");
   const wallList = $("#dua-list");
@@ -563,6 +563,34 @@
       });
     }, {threshold:0.08});
     sections.forEach(section => { section.classList.add("reveal"); observer.observe(section); });
+  }
+  const readingProgress = $("#reading-progress");
+  const backToTop = $("#back-to-top");
+  let scrollTicking = false;
+  function updateScrollUI() {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+    if (readingProgress) readingProgress.style.width = Math.min(100, Math.max(0, progress)) + "%";
+    if (backToTop) backToTop.classList.toggle("is-visible", window.scrollY > 520);
+    scrollTicking = false;
+  }
+  window.addEventListener("scroll", () => {
+    if (!scrollTicking) { window.requestAnimationFrame(updateScrollUI); scrollTicking = true; }
+  }, {passive:true});
+  updateScrollUI();
+  backToTop?.addEventListener("click", () => window.scrollTo({top:0,behavior:reducedMotion ? "auto" : "smooth"}));
+  const navLinks = Array.from(document.querySelectorAll("nav a[href^='#']"));
+  const navTargets = navLinks.map(link => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+  if ("IntersectionObserver" in window && navTargets.length) {
+    const navObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach(link => {
+        const active = link.getAttribute("href") === "#" + entry.target.id;
+        link.classList.toggle("is-active", active);
+        if (active) link.setAttribute("aria-current", "location"); else link.removeAttribute("aria-current");
+      });
+    }), {rootMargin:"-25% 0px -65% 0px",threshold:0});
+    navTargets.forEach(target => navObserver.observe(target));
   }
   renderStory();
   startStories();
