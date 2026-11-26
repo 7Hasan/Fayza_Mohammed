@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="أيقونة امرأة محجبة">
-  <circle cx="256" cy="256" r="244" fill="#f3ebdd" stroke="#b87945" stroke-width="16"/>
-  <circle cx="256" cy="256" r="218" fill="#faf6ee"/>
-  <path d="M256 68c-105 0-173 79-173 190v163c0 27 22 49 49 49h248c27 0 49-22 49-49V258C429 147 361 68 256 68Z" fill="#435333"/>
-  <path d="M139 457c12-92 49-143 117-143s105 51 117 143" fill="#596b43"/>
+  <circle cx="256" cy="256" r="244" fill="#F4ECEB" stroke="#B88B72" stroke-width="16"/>
+  <circle cx="256" cy="256" r="218" fill="#FFFAF8"/>
+  <path d="M256 68c-105 0-173 79-173 190v163c0 27 22 49 49 49h248c27 0 49-22 49-49V258C429 147 361 68 256 68Z" fill="#563D50"/>
+  <path d="M139 457c12-92 49-143 117-143s105 51 117 143" fill="#8B6478"/>
   <path d="M174 201c0-59 34-94 82-94s82 35 82 94v69c0 67-38 113-82 113s-82-46-82-113v-69Z" fill="#dcb58f"/>
-  <path d="M161 223c5-87 42-131 95-131s90 44 95 131c-23-38-55-58-95-58s-72 20-95 58Z" fill="#303d27"/>
-  <path d="M169 267c11 76 40 126 87 147 47-21 76-71 87-147-20 32-47 49-87 49s-67-17-87-49Z" fill="#435333"/>
-  <path d="M172 300c-29 45-43 91-43 139h254c0-48-14-94-43-139-16 67-46 102-84 102s-68-35-84-102Z" fill="#596b43"/>
+  <path d="M161 223c5-87 42-131 95-131s90 44 95 131c-23-38-55-58-95-58s-72 20-95 58Z" fill="#35283A"/>
+  <path d="M169 267c11 76 40 126 87 147 47-21 76-71 87-147-20 32-47 49-87 49s-67-17-87-49Z" fill="#563D50"/>
+  <path d="M172 300c-29 45-43 91-43 139h254c0-48-14-94-43-139-16 67-46 102-84 102s-68-35-84-102Z" fill="#8B6478"/>
   <path d="M211 253c10 7 21 10 45 10s35-3 45-10" fill="none" stroke="#8f6047" stroke-width="7" stroke-linecap="round"/>
-  <circle cx="224" cy="236" r="6" fill="#435333"/>
-  <circle cx="288" cy="236" r="6" fill="#435333"/>
+  <circle cx="224" cy="236" r="6" fill="#563D50"/>
+  <circle cx="288" cy="236" r="6" fill="#563D50"/>
   <path d="M239 293c11 8 23 8 34 0" fill="none" stroke="#9b684e" stroke-width="6" stroke-linecap="round"/>
-  <path d="M111 390c22 17 46 28 72 34" fill="none" stroke="#b87945" stroke-width="7" stroke-linecap="round" opacity=".8"/>
-  <path d="M401 390c-22 17-46 28-72 34" fill="none" stroke="#b87945" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+  <path d="M111 390c22 17 46 28 72 34" fill="none" stroke="#B88B72" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+  <path d="M401 390c-22 17-46 28-72 34" fill="none" stroke="#B88B72" stroke-width="7" stroke-linecap="round" opacity=".8"/>
 </svg>
