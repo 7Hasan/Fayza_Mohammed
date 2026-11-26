@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "صدقة جارية عن روح فايزة محمد",
+  "short_name": "صدقة فايزة",
+  "description": "قرآن وأذكار ودعاء عن روح فايزة محمد رحمها الله",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3ebdd",
+  "theme_color": "#435333",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
